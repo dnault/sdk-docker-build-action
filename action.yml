@@ -111,5 +111,5 @@ runs:
       id: report
       shell: bash
       run: |
-        echo "image_name=${{ steps.meta.outputs.tags }}`" >> $GITHUB_OUTPUT
-        echo "image_digest=${{ steps.build.outputs.digest }}`" >> $GITHUB_OUTPUT
+        echo "image_name=${{ steps.meta.outputs.tags }}" >> $GITHUB_OUTPUT
+        echo "image_digest=${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT

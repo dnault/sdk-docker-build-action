@@ -51,7 +51,7 @@ runs:
           echo "source=github" >> $GITHUB_OUTPUT
           if [[ "$INPUT_REF" == refs/pull/* ]]; then
              PR_NUMBER=$(echo "$INPUT_REF" | cut -d'/' -f3)
-             echo "pr_label_for_github=com.couchbase.pr=${{ github.server_url }}/${{ github.repository }}/pull/" >> $GITHUB_OUTPUT
+             echo "pr_label_for_github=com.couchbase.pr=${{ github.server_url }}/${{ github.repository }}/pull/${PR_NUMBER}" >> $GITHUB_OUTPUT
           fi
         fi
 

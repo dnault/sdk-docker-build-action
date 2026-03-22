@@ -87,7 +87,9 @@ runs:
       uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: type=raw,value=${{ env.IMAGE_VERSION }}
+        tags: |
+          type=raw,value=${{ env.IMAGE_VERSION }}
+          type=sha,format=short
         flavor: latest=false
         labels: |
           com.couchbase.github.actions.run=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -95,6 +97,8 @@ runs:
           ${{ steps.plan.outputs.image_source_override_for_gerrit }}
           ${{ steps.plan.outputs.pr_label_for_gerrit }}
           ${{ steps.plan.outputs.pr_label_for_github }}
+      env:
+        DOCKER_METADATA_SHORT_SHA_LENGTH: 12
 
     - name: Build and push Docker image
       id: build

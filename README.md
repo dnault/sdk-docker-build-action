@@ -38,7 +38,7 @@ jobs:
       packages: write
 
     steps:
-      - uses: dnault/publish-fit-performer@v1
+      - uses: dnault/sdk-docker-build-action@v1
         with:
           sdk: <my-sdk-name> # like 'rust' or 'analytics-python'
           ref: ${{ inputs.ref }}

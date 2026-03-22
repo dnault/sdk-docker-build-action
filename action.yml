@@ -1,5 +1,5 @@
-name: publish-fit-performer
-description: Builds a FIT performer from a Dockerfile and publishes it to ghcr.io
+name: sdk-docker-build-action
+description: Builds a Docker image and publishes it to ghcr.io
 inputs:
   sdk:
     description: "Short SDK name, like 'rust' or 'analytics-python'. Passed to the Dockerfile as SDK build argument, and included in image name."

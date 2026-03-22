@@ -121,4 +121,5 @@ runs:
       shell: bash
       run: |
         echo '🔖 `${{ steps.report.outputs.image }}`' >> $GITHUB_STEP_SUMMARY
+        echo
         echo '📌 `${{ steps.report.outputs.pinned-image }}`' >> $GITHUB_STEP_SUMMARY

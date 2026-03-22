@@ -24,6 +24,12 @@ runs:
     - name: Set environment variables
       shell: bash
       run: |
+        echo REF_NAME=${{ inputs.ref || github.ref_name }}
+        if [[ "$REF_NAME" =~ ^v[0-9] ]]; then
+            # strip 'v' prefix from tags
+            REF_NAME="${REF_NAME#v}"
+        fi
+        echo "IMAGE_VERSION=${REF_NAME}" >> $GITHUB_ENV
         echo "REGISTRY=ghcr.io" >> $GITHUB_ENV
         echo "IMAGE_NAME=${{ github.repository_owner }}/${{ inputs.sdk }}-fit-performer" >> $GITHUB_ENV
         echo "GERRIT_SERVER_URL=https://review.couchbase.org" >> $GITHUB_ENV
@@ -71,12 +77,12 @@ runs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Extract metadata (tags, labels) for Docker
+    - name: Prepare metadata (tags, labels) for Docker
       id: meta
       uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: type=raw,value=${{ inputs.ref || github.ref_name }}
+        tags: type=raw,value=${{ env.IMAGE_VERSION }}
         flavor: latest=false
         labels: |
           com.couchbase.github.actions.run=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -94,15 +100,12 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
 
-    - name: Print summary
+    - name: Report output values
+      id: report
       shell: bash
       run: |
         echo '🔖 `${{ steps.meta.outputs.tags }}`' >> $GITHUB_STEP_SUMMARY
         echo '📌 `${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}`' >> $GITHUB_STEP_SUMMARY
 
-    - name: Set output values
-      id: report
-      shell: bash
-      run: |
         echo "image_name=${{ steps.meta.outputs.tags }}" >> $GITHUB_OUTPUT
         echo "image_digest=${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT

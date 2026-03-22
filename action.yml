@@ -46,9 +46,13 @@ runs:
         if [[ "$INPUT_REF" =~ ^refs/changes/ ]]; then
           echo "source=gerrit" >> $GITHUB_OUTPUT
           echo "image_source_override_for_gerrit=org.opencontainers.image.source=${{ env.GERRIT_SERVER_URL }}/admin/repos/${{ env.GERRIT_REPO_NAME }}" >> $GITHUB_OUTPUT
-          echo "pr_label_for_gerrit=com.couchbase.pr=${{env.GERRIT_SERVER_URL}}/c/${{ env.GERRIT_REPO_NAME }}/+/${INPUT_REF#${INPUT_REF%/*/*}/}" >> $GITHUB_OUTPUT
+          echo "pr_label_for_gerrit=com.couchbase.pr=${{ env.GERRIT_SERVER_URL }}/c/${{ env.GERRIT_REPO_NAME }}/+/${INPUT_REF#${INPUT_REF%/*/*}/}" >> $GITHUB_OUTPUT
         else
           echo "source=github" >> $GITHUB_OUTPUT
+          if [[ "$INPUT_REF" == refs/pull/* ]]; then
+             PR_NUMBER=$(echo "$INPUT_REF" | cut -d'/' -f3)
+             echo "pr_label_for_github=com.couchbase.pr=${{ github.server_url }}/${{ github.repository }}/pull/" >> $GITHUB_OUTPUT
+          fi
         fi
 
     - name: Check out from GitHub
@@ -90,6 +94,7 @@ runs:
           org.opencontainers.image.revision=${{ env.COMMIT_HASH }}
           ${{ steps.plan.outputs.image_source_override_for_gerrit }}
           ${{ steps.plan.outputs.pr_label_for_gerrit }}
+          ${{ steps.plan.outputs.pr_label_for_github }}
 
     - name: Build and push Docker image
       id: build

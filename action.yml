@@ -24,7 +24,7 @@ runs:
     - name: Set environment variables
       shell: bash
       run: |
-        echo REF_NAME=${{ inputs.ref || github.ref_name }}
+        REF_NAME=${{ inputs.ref || github.ref_name }}
         if [[ "$REF_NAME" =~ ^v[0-9] ]]; then
             # strip 'v' prefix from tags
             REF_NAME="${REF_NAME#v}"

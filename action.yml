@@ -83,17 +83,10 @@ runs:
           org.opencontainers.image.revision=${{ env.COMMIT_HASH }}
           ${{ steps.plan.outputs.image_source_override_for_gerrit }}
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd
-      with:
-        driver: docker-container # for cache export
-
     - name: Build and push Docker image
       id: build
       uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294
       with:
-        cache-from: type=gha
-        cache-to: type=gha,mode=min
         context: .
         file: ${{ inputs.dockerfile }}
         build-args: SDK=${{ inputs.sdk }}

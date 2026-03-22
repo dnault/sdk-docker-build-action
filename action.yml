@@ -99,8 +99,6 @@ runs:
           ${{ steps.plan.outputs.image_source_override_for_gerrit }}
           ${{ steps.plan.outputs.pr_label_for_gerrit }}
           ${{ steps.plan.outputs.pr_label_for_github }}
-      env:
-        DOCKER_METADATA_SHORT_SHA_LENGTH: 12
 
     - name: Build and push Docker image
       id: build

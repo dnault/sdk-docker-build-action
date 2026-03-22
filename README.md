@@ -7,7 +7,7 @@ Example usage:
 ```yaml
 name: Publish FIT performer
 
-run-name: ${{ github.event.head_commit.message || inputs.ref }}
+run-name: ${{ inputs.ref }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ inputs.ref }}

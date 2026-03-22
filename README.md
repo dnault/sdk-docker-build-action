@@ -1,6 +1,8 @@
-# publish-fit-performer
+# sdk-docker-build-action
 
-Builds a FIT performer Docker image and publishes it to `ghcr.io`.
+GitHub Action used by the SDK team to build and publish Docker images for FIT/SIT tests.
+
+Builds a Docker image and publishes it to `ghcr.io`.
 
 Example usage:
 
